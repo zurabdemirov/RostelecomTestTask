@@ -1,0 +1,10 @@
+.pagination{
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 0px;
+}
+
+.pagination > li{
+    list-style-type: none;
+    padding-right: 10px;
+}

@@ -1,0 +1,14 @@
+.TablePage{
+    display: flex;
+}
+
+.tableBodyContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.tableFooterContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
