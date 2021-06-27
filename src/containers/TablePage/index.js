@@ -7,6 +7,8 @@ import {DisplayingUserData} from "../../components/TableComponent/DisplayingUser
 import Pagination from "../../components/Pagination";
 
 import "./tablePage.css";
+import {Add} from "@material-ui/icons";
+import {AddTableRow} from "../../components/TableComponent/AddTableRow/AddTableRow";
 
 const BASE_URL = 'http://www.filltext.com/?'
 
@@ -38,9 +40,18 @@ function TablePage({onClickBack, query}) {
         setLoading(false)
     }
 
+    const addList = (odj) => {
+        const arrResult = [...list];
+        arrResult.unshift(odj);
+        // console.log('1',list)
+        setList(arrResult)
+        // console.log('2',list)
+    }
+
+
     useEffect(() => {
         getList(query)
-    },[])
+    }, [])
 
     const filtration = (pressedItem, isLocal) => {
         const copyStateArray = listData.concat()
@@ -50,7 +61,7 @@ function TablePage({onClickBack, query}) {
         } else {
             sortData = copyStateArray.reverse((a, b) => a[pressedItem] > b[pressedItem] ? 1 : -1)
         }
-        if(!isLocal) {
+        if (!isLocal) {
             setListData(sortData)
             setPressedElem(pressedItem)
             setSortingDirection(!sortingDirection)
@@ -70,7 +81,7 @@ function TablePage({onClickBack, query}) {
     const getFilteredList = (data) => {
         let filteredList = [...data]
         Object.keys(filterData).map(item => {
-            if(filterData[item] !== ''){
+            if (filterData[item] !== '') {
                 filteredList = filteredList.filter(elem => {
                     return String(elem[item]).toLocaleLowerCase().indexOf(filterData[item].toLocaleLowerCase()) !== -1
                 })
@@ -82,9 +93,12 @@ function TablePage({onClickBack, query}) {
     return (
         <div className="TablePage">
             {loading
-                ? <Loader/>
+                ? <div className="TableLoader">
+                    <Loader/>
+                </div>
                 : <div className="tableBodyContainer">
                     <Button onClick={onClickBack}>назад</Button>
+                    <AddTableRow addList={addList}/>
                     <TableComponent
                         filterData={filterData}
                         setFilterData={setFilterData}
@@ -97,10 +111,10 @@ function TablePage({onClickBack, query}) {
                         <DisplayingUserData displayingUserData={displayingUserData}/>
                         <Pagination items={getFilteredList(list)} onChangePage={handleChangePage}/>
                     </div>
-                  </div>
+                </div>
             }
         </div>
-    );
-}
+    )
+};
 
 export default TablePage;

@@ -13,7 +13,7 @@ export const TableComponent = (props) => {
 
     const Arrow = () => {
         return (
-            sortingDirection ? <ArrowDownwardIcon/> : <ArrowUpwardIcon/>
+            sortingDirection ? <ArrowDownwardIcon fontSize={"small"}/> : <ArrowUpwardIcon fontSize={"small"}/>
         )
     }
 
@@ -33,38 +33,38 @@ export const TableComponent = (props) => {
             <thead>
             <tr>
                 <th>
-                    <input value={filterData.id} type="text" onChange={(event) => handleChangeFilter('id', event)}/>
-                    <div onClick={() => (fieldSortData('id'))}>
-                        ID
-                        {fieldData === 'id' ? <Arrow/> : null}
+                    <input value={filterData.id} type="number" onChange={(event) => handleChangeFilter('id', event)}/>
+                    <div className="thBox" onClick={() => (fieldSortData('id'))}>
+                        <div>ID</div>
+                        {fieldData === 'id' ? <Arrow/> : <Arrow/>}
                     </div>
                 </th>
                 <th>
                     <input value={filterData.firstName} type="text" onChange={(event) => handleChangeFilter('firstName', event)}/>
-                    <div onClick={() => (fieldSortData('firsName'))}>
-                        First Name
-                        {fieldData === 'firsName' ? <Arrow/> : null}
+                    <div className="thBox" onClick={() => (fieldSortData('firsName'))}>
+                        <div>First Name</div>
+                        {fieldData === 'firsName' ? <Arrow/> : <Arrow/>}
                     </div>
                 </th>
                 <th>
                     <input value={filterData.lastName} type="text" onChange={(event) => handleChangeFilter('lastName', event)}/>
-                    <div onClick={() => (fieldSortData('lastName'))}>
-                        Last Name
-                        {fieldData === 'lastName' ? <Arrow/> : null}
+                    <div className="thBox" onClick={() => (fieldSortData('lastName'))}>
+                        <div>Last Name</div>
+                        {fieldData === 'lastName' ? <Arrow/> : <Arrow/>}
                     </div>
                 </th>
                 <th>
                     <input value={filterData.email} type="text" onChange={(event) => handleChangeFilter('email', event)}/>
-                    <div onClick={() => (fieldSortData('email'))}>
-                        Email
-                        {fieldData === 'email' ? <Arrow/> : null}
+                    <div className="thBox" onClick={() => (fieldSortData('email'))}>
+                        <div>Email</div>
+                        {fieldData === 'email' ? <Arrow/> : <Arrow/>}
                     </div>
                 </th>
                 <th>
                     <input value={filterData.phone} type="text" onChange={(event) => handleChangeFilter('phone', event)}/>
-                    <div onClick={() => (fieldSortData('phone'))}>
-                        Phone
-                        {fieldData === 'phone' ? <Arrow/> : null}
+                    <div className="thBox" onClick={() => (fieldSortData('phone'))}>
+                        <div>Phone</div>
+                        {fieldData === 'phone' ? <Arrow/> : <Arrow/>}
                     </div>
                 </th>
             </tr>

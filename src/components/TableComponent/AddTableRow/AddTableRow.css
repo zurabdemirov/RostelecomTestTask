@@ -1,24 +1,22 @@
-
-.table {
+.tableAdd {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
     border: 1px solid #dddddd;
     border-collapse: collapse;
 }
 
-.table th {
+.tableAdd th {
     font-weight: bold;
     padding: 5px;
     background: #efefef;
     border: 1px solid #dddddd;
 }
 
-.table td {
+.tableAdd td {
     border: 1px solid #dddddd;
     padding: 5px;
 }
 
-.thBox {
-    display: flex;
-    justify-content: center;
+.tableAddBoxButton {
+    padding-bottom: 20px;
 }

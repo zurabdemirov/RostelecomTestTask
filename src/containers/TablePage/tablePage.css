@@ -12,3 +12,7 @@
     justify-content: space-between;
 }
 
+.TableLoader {
+    display: flex;
+    justify-content: center;
+}
