@@ -4,7 +4,7 @@ const initialState = {
     count: 0,
 }
 
-const increment = createAction("INCREMENT")
+export const increment = createAction("INCREMENT")
 
 export default createReducer(initialState,{
     [increment]: function (state) {

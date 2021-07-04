@@ -8,6 +8,7 @@ import './App.css';
 
 import SelectTypeTablePage from './containers/SelectTypeTablePage'
 import TablePage from './containers/TablePage'
+import {useDispatch, useSelector} from "react-redux";
 
 const DEFAULT_QUERY = {
     rows: 32,
@@ -22,6 +23,10 @@ const DEFAULT_QUERY = {
 }
 
 function App() {
+    const count = useSelector(state => state.toolkit.count);
+    const dispatch = useDispatch()
+    console.log(count)
+
     const [showTable, setShowTable] = useState(false)
     const [query, setQuery] = useState(DEFAULT_QUERY)
 
@@ -34,7 +39,6 @@ function App() {
         setShowTable(false)
         setQuery(DEFAULT_QUERY)
     }
-
 
     return (
         <div className="App">

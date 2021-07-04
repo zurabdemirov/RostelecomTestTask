@@ -7,7 +7,6 @@ import {DisplayingUserData} from "../../components/TableComponent/DisplayingUser
 import Pagination from "../../components/Pagination";
 
 import "./tablePage.css";
-import {Add} from "@material-ui/icons";
 import {AddTableRow} from "../../components/TableComponent/AddTableRow/AddTableRow";
 
 const BASE_URL = 'http://www.filltext.com/?'
@@ -22,8 +21,8 @@ function TablePage({onClickBack, query}) {
         lastName: '',
         email: '',
         phone: '',
-    })
-    const [loading, setLoading] = useState(false)
+    });
+    const [loading, setLoading] = useState(false);
     const [sortingDirection, setSortingDirection] = useState(true);
     const [displayingUserData, setDisplayingUserData] = useState('');
 
@@ -43,9 +42,7 @@ function TablePage({onClickBack, query}) {
     const addList = (odj) => {
         const arrResult = [...list];
         arrResult.unshift(odj);
-        // console.log('1',list)
         setList(arrResult)
-        // console.log('2',list)
     }
 
 
