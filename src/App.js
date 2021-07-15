@@ -2,13 +2,11 @@ import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 
 import './App.css';
-// import {TableComponent} from "./components/TableComponent/TableComponent";
-// import {Loader} from "./components/shared/Loader/Loader";
-// import {DisplayingUserData} from "./components/TableComponent/DisplayingUserData/DisplayingUserData";
 
 import SelectTypeTablePage from './containers/SelectTypeTablePage'
 import TablePage from './containers/TablePage'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {getUsers} from "./Redux/userReducer";
 
 const DEFAULT_QUERY = {
     rows: 32,
@@ -23,21 +21,18 @@ const DEFAULT_QUERY = {
 }
 
 function App() {
-    const count = useSelector(state => state.toolkit.count);
     const dispatch = useDispatch()
-    console.log(count)
 
     const [showTable, setShowTable] = useState(false)
-    const [query, setQuery] = useState(DEFAULT_QUERY)
 
-    const handleClickType = (rows, delay) => {
+    const handleGetUsers = (rows, delay) => {
+        const query = {...DEFAULT_QUERY, rows, delay}
+        dispatch(getUsers(query))
         setShowTable(true)
-        setQuery({...query, rows, delay})
     }
 
     const handleClickBack = () => {
         setShowTable(false)
-        setQuery(DEFAULT_QUERY)
     }
 
     return (
@@ -45,11 +40,12 @@ function App() {
             <Router>
                 <div className="container">
                     {showTable
-                        ? <TablePage
-                            query={query}
-                            onClickBack={handleClickBack}
+                        ? (
+                            <TablePage
+                                onClickBack={handleClickBack}
                             />
-                        : <SelectTypeTablePage onClick={handleClickType}/>
+                        )
+                        : <SelectTypeTablePage getUsers={handleGetUsers}/>
                     }
                 </div>
             </Router>

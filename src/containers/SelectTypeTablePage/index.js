@@ -1,7 +1,7 @@
 import React from "react";
 import {Button} from "@material-ui/core";
 
-function SelectTypeTablePage({onClick}) {
+function SelectTypeTablePage({getUsers}) {
 
     const handleClick = (type) => {
         let rows = 32;
@@ -9,9 +9,8 @@ function SelectTypeTablePage({onClick}) {
         if (type === 'large'){
             rows = 1000;
             delay = 3;
-            return onClick(rows, delay)
         }
-        return onClick(rows, delay)
+        return getUsers(rows, delay)
     }
 
     return (

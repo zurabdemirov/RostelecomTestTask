@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {Button} from "@material-ui/core";
-import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
 import {Loader} from "../../components/shared/Loader/Loader";
 import {TableComponent} from "../../components/TableComponent/TableComponent";
 import {DisplayingUserData} from "../../components/TableComponent/DisplayingUserData/DisplayingUserData";
 import Pagination from "../../components/Pagination";
-
-import "./tablePage.css";
 import {AddTableRow} from "../../components/TableComponent/AddTableRow/AddTableRow";
 
-const BASE_URL = 'http://www.filltext.com/?'
+import "./tablePage.css";
+import {setUsers} from "../../Redux/userReducer";
 
 function TablePage({onClickBack, query}) {
-    const [list, setList] = useState([])
+    const userList = useSelector(state =>  state.users.data)
+    const isLoading = useSelector(state => state.users.isLoading)
+    const dispatch = useDispatch()
+
     const [listData, setListData] = useState([])
     const [pressedElem, setPressedElem] = useState('')
     const [filterData, setFilterData] = useState({
@@ -22,46 +24,26 @@ function TablePage({onClickBack, query}) {
         email: '',
         phone: '',
     });
-    const [loading, setLoading] = useState(false);
     const [sortingDirection, setSortingDirection] = useState(true);
     const [displayingUserData, setDisplayingUserData] = useState('');
 
-    const formatQuery = (obj) => {
-        return Object.keys(obj).map((k) => {
-            return encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]);
-        }).join('&')
+    const handleAddTableRow = (newRow) => {
+        dispatch(setUsers([newRow, ...userList]))
+        setListData([newRow, ...listData]);
     }
-
-    const getList = async () => {
-        setLoading(true)
-        const {data} = await axios.get(`${BASE_URL}${formatQuery(query)}`)
-        setList(data || [])
-        setLoading(false)
-    }
-
-    const addList = (odj) => {
-        const arrResult = [...list];
-        arrResult.unshift(odj);
-        setList(arrResult)
-    }
-
-
-    useEffect(() => {
-        getList(query)
-    }, [])
 
     const filtration = (pressedItem, isLocal) => {
-        const copyStateArray = listData.concat()
+        const copyStateArray = listData.slice()
         let sortData;
-        if (sortingDirection) {
-            sortData = copyStateArray.sort((a, b) => a[pressedItem] > b[pressedItem] ? 1 : -1)
+        if (!sortingDirection || pressedElem !== pressedItem) {
+            sortData = copyStateArray.sort((a, b) => a[pressedItem] > b[pressedItem] ? -1 : 1)
         } else {
-            sortData = copyStateArray.reverse((a, b) => a[pressedItem] > b[pressedItem] ? 1 : -1)
+            sortData = copyStateArray.sort((a, b) => a[pressedItem] > b[pressedItem] ? 1 : -1)
         }
         if (!isLocal) {
             setListData(sortData)
             setPressedElem(pressedItem)
-            setSortingDirection(!sortingDirection)
+            setSortingDirection(pressedElem !== pressedItem || !sortingDirection)
         } else {
             return sortData
         }
@@ -87,29 +69,39 @@ function TablePage({onClickBack, query}) {
         return filteredList
     }
 
+    const handleDelete = (id) => {
+        const newList = userList.filter(user => user.id !== id);
+        dispatch(setUsers(newList))
+        const newListData = listData.filter(user => user.id !== id);
+        setListData(newListData);
+    }
+
     return (
         <div className="TablePage">
-            {loading
-                ? <div className="TableLoader">
-                    <Loader/>
-                </div>
-                : <div className="tableBodyContainer">
-                    <Button onClick={onClickBack}>назад</Button>
-                    <AddTableRow addList={addList}/>
-                    <TableComponent
-                        filterData={filterData}
-                        setFilterData={setFilterData}
-                        tableDataArray={getFilteredList(listData)}
-                        filtration={filtration}
-                        sortingDirection={sortingDirection}
-                        getTableRow={getTableRow}
-                    />
-                    <div className="tableFooterContainer">
-                        <DisplayingUserData displayingUserData={displayingUserData}/>
-                        <Pagination items={getFilteredList(list)} onChangePage={handleChangePage}/>
+            {isLoading
+                ? (
+                    <div className="TableLoader">
+                        <Loader/>
                     </div>
-                </div>
-            }
+                ) : (
+                    <div className="tableBodyContainer">
+                        <Button onClick={onClickBack}>назад</Button>
+                        <AddTableRow addTableRow={handleAddTableRow}/>
+                        <TableComponent
+                            filterData={filterData}
+                            setFilterData={setFilterData}
+                            tableDataArray={getFilteredList(listData)}
+                            filtration={filtration}
+                            sortingDirection={sortingDirection}
+                            getTableRow={getTableRow}
+                            onDelete={handleDelete}
+                        />
+                        <div className="tableFooterContainer">
+                            <DisplayingUserData displayingUserData={displayingUserData}/>
+                            <Pagination items={getFilteredList(userList)} onChangePage={handleChangePage}/>
+                        </div>
+                    </div>
+                )}
         </div>
     )
 };

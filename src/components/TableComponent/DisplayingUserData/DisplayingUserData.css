@@ -8,3 +8,7 @@
     align-items: center;
     height: 30px;
 }
+
+.box >  div > span{
+    margin-left: 5px;
+}

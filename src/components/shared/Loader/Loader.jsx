@@ -1,5 +1,4 @@
 import React from "react";
-// import {isDocumentVisible} from "@reduxjs/toolkit/dist/query/utils";
 import "./Loader.scss"
 
 export const Loader = () => {

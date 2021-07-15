@@ -1,10 +1,10 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk'
-import reducer from "./reducer";
+import userReducer from "./userReducer";
 
 const rootReducer = combineReducers({
-    toolkit: reducer
+    users: userReducer
 })
 
 export const store = createStore(
