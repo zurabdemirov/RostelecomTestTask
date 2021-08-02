@@ -95,6 +95,7 @@ function TablePage({onClickBack, query}) {
                             sortingDirection={sortingDirection}
                             getTableRow={getTableRow}
                             onDelete={handleDelete}
+                            setListData={setListData}
                         />
                         <div className="tableFooterContainer">
                             <DisplayingUserData displayingUserData={displayingUserData}/>

@@ -1,5 +1,6 @@
+import arrayMove from 'array-move';
 import React, {useState} from "react";
-import shortid from 'shortid';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import "./TableComponent.css";
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -31,10 +32,40 @@ export const tableHeaders = [
     },
 ];
 
+const SortableItem = SortableElement(({user, getTableRow, handleDeleteRow}) =>
+    <tr onClick={() => (getTableRow(user))}>
+        <td>{user.id}</td>
+        <td>{user.firstName}</td>
+        <td>{user.lastName}</td>
+        <td>{user.email}</td>
+        <td>{user.phone}</td>
+        <td>
+            <button onClick={handleDeleteRow(user.id)}>Delete</button>
+        </td>
+    </tr>
+);
+
+const SortableBody = SortableContainer(({tableDataArray, getTableRow, handleDeleteRow}) => {
+    return (
+        <tbody>
+            {tableDataArray.map((user, index) => (
+                <SortableItem
+                    key={user.id}
+                    index={index}
+                    user={user}
+                    getTableRow={getTableRow}
+                    handleDeleteRow={handleDeleteRow}
+                />
+            ))
+            }
+        </tbody>
+    );
+});
+
 export const TableComponent = (props) => {
     const {
         tableDataArray, filtration, sortingDirection,
-        getTableRow, setFilterData, filterData, onDelete} = props
+        getTableRow, setFilterData, filterData, onDelete, setListData} = props
 
     const [fieldData, setFieldData] = useState('')
 
@@ -50,6 +81,10 @@ export const TableComponent = (props) => {
     }
     const handleDeleteRow = (id) => () => {
         onDelete(id);
+    };
+
+    const onSortEnd = ({oldIndex, newIndex}) => {
+        setListData(arrayMove(tableDataArray, oldIndex, newIndex));
     };
 
     return (
@@ -78,21 +113,12 @@ export const TableComponent = (props) => {
                 ))}
             </tr>
             </thead>
-            <tbody>
-                {tableDataArray.map((user) => (
-                    <tr key={shortid.generate()} onClick={() => (getTableRow(user))}>
-                        <td>{user.id}</td>
-                        <td>{user.firstName}</td>
-                        <td>{user.lastName}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
-                        <td>
-                            <button onClick={handleDeleteRow(user.id)}>Delete</button>
-                        </td>
-                    </tr>
-                ))
-                }
-            </tbody>
+            <SortableBody
+                tableDataArray={tableDataArray}
+                getTableRow={getTableRow}
+                handleDeleteRow={handleDeleteRow}
+                onSortEnd={onSortEnd}
+            />
         </table>
     )
 }
